@@ -1,6 +1,8 @@
 //dependencies needed for server side
 const express = require("express");
 const mongoose = require("mongoose");
+const session = require("express-session");
+const User = require("./models/Users");
 
 
 const app = express();
@@ -29,4 +31,19 @@ mongoose.connect(process.env.MONGOBD_URI || 'mongodb+srv://MuhammedEkinci:*Tbn58
 // Start the API server
 app.listen(PORT, function() {
     console.log("==> 🌎  Listening on port %s. Visit http://localhost:%s/ in your browser.", PORT, PORT);
+});
+
+//api-routes
+
+// post users into database
+app.post("api/users", (req, res) => {
+    console.log("route hit!!");
+    User.create(req.body).then((error, data) => {
+        if(error) {
+            res.send(error)
+        } else {
+            console.log(data)
+            res.json(data);
+        }
+    });
 });
