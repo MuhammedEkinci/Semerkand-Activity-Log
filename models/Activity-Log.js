@@ -6,6 +6,10 @@ const activitySchema = new Schema({
         type: String,
         required: true
     },
+    country: {
+        type: String,
+        required: true
+    },
     activityCode: {
         type: String,
         required: true
