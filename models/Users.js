@@ -16,10 +16,12 @@ const userSchema = new Schema({
         min:[1]
     },
     branch: {
-        type: String
+        type: String,
+        required: true
     },
     loginDate: {
-        type: String
+        type: Date,
+        default: Date.now
     },
     name: {
         type: String,
@@ -27,7 +29,8 @@ const userSchema = new Schema({
         min:[1]
     },
     email: {
-        type: String
+        type: String,
+        required:true
     },
     phone: {
         type: String

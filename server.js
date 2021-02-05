@@ -40,6 +40,10 @@ mongoose.connect(process.env.MONGOBD_URI || 'mongodb+srv://MuhammedEkinci:*Tbn58
     }
 )
 
+//middleware
+app.use("/api", require("./router/userRouter"));
+app.use("/api", require("./router/Activity-Routes"));
+
 // Start the API server
 app.listen(PORT, function() {
     console.log("==> 🌎  Listening on port %s. Visit http://localhost:%s/ in your browser.", PORT, PORT);
@@ -73,28 +77,32 @@ app.get("/api/users", (req, res) => {
     });
 });
 
+
+
+
+
 //route to post activities to database
 app.post("/api/activities", (req, res) => {
     console.log("route hit!!");
-    Activity.create(req.body).then((error, data) => {
-        if(error) {
-            res.send(error)
-        } else {
-            console.log(data)
-            res.json(data);
-        }
-    });
+    // Activity.create(req.body).then((error, data) => {
+    //     if(error) {
+    //         res.send(error)
+    //     } else {
+    //         console.log(data)
+    //         res.json(data);
+    //     }
+    // });
 });
 
 // route to get activities from database to render on webpage
 app.get("/api/activities", (req, res) => {
     console.log("route hit!!");
-    Activity.find({}, (error, data) => {
-        if(error) {
-            console.log(error)
-        }
-        else {
-            res.json(data);
-        }
-    });
+    // Activity.find({}, (error, data) => {
+    //     if(error) {
+    //         console.log(error)
+    //     }
+    //     else {
+    //         res.json(data);
+    //     }
+    // });
 });
