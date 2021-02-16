@@ -8,7 +8,7 @@ mongoose.connect(process.env.MONGOBD_URI || 'mongodb+srv://MuhammedEkinci:*Tbn58
     }
 )
 
-users = [
+user = [
     {
         userID: "us-01-01",
         password: "123456",

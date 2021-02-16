@@ -1,37 +1,33 @@
 const router = require("express").Router();
 const User = require("../models/Users");
+const bcrypt = require("bcryptjs");
+const { request } = require("express");
 
 // post users into database
-router.post("/users", async (req, res) => {
-    res.send("route hit!!");
-    try{
-        const {userID, email, password, passwordVerify} = req.body;
+router.post("/users", async (req, res, next) => {
+    res.send("post user route hit!!");
 
-        //validation
-        if(!email || !userID || !password || !passwordVerify) 
-            return res.status(400).json({
-                errorMessage: "Please enter all required fields. ",
-            });
-        
-        if(password.lenght < 6) 
-            return res.status(400).json({
-                errorMessage: "Enter a password atleast 6 characters. ",
-            });
-        
-        if(password !== passwordVerify) 
-            return res.status(400).json({
-                errorMessage: "Passwords do not match!",
-            });
+    const {userID, password, branch, username, email, phone} = req.body;
 
-        const existingUser = await User.findOne({email});
-        if(existingUser)
-            return res.status(400).json({
-                errorMessage: "Account with this email already exists",
-            });
+    try {
+        const user = await User.create({
+            userID,
+            password,
+            branch,
+            username,
+            email,
+            phone,
+        });
 
-    } catch(err) {
-        console.log(err);
-        res.status(500).send();
+        return res.status(201).json({
+            success: true,
+            user,
+        });
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            error: error.message,
+        })
     }
     // User.create(req.body).then((error, data) => {
     //     if(error) {
@@ -45,7 +41,7 @@ router.post("/users", async (req, res) => {
 
 //get all users for admin to see and manage
 router.get("/users", (req, res) => {
-    res.send("route hit!!");
+    res.send("get route hit!!");
     // User.find({}, (error, data) => {
     //     if(error) {
     //         console.log(error)
@@ -55,5 +51,49 @@ router.get("/users", (req, res) => {
     //     }
     // });
 });
+
+
+//login route
+router.post("/login", async (req, res) => {
+    const {userID, password} = req.body;
+
+    if(!userID || !password) {
+        return res.status(400).json({
+            success: false,
+            error: "Please provide userID and Password"
+        })
+    }
+
+    try {
+        const user = await User.findOne({ userID }).select("+password");
+
+        if(!user){
+            return res.status(404).json({
+                success: false,
+                error: "Invalid credentials"
+            });
+        }
+
+        const isMatch = await user.matchPasswords(password);
+
+        if(!isMatch) {
+            return res.status(404).json({
+                success: false,
+                error: "Invalid password"
+            });
+        }
+
+        return res.status(404).json({
+            success: true,
+            token: "kfhkshfksdjfhskfh",
+        });
+
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            error: error.message
+        });
+    }
+})
 
 module.exports = router;

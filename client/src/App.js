@@ -9,14 +9,12 @@ import {AuthContext} from "./context/auth";
 function App() {
   return (
     <div className="App">
-      <AuthContext.Provider value={false}>
         <Router>
-          <PrivateRoute exact path="/Home" component={Home} />
+          <Route exact path="/Home" component={Home} />
           <Route exact path="/" component={Login} />
           <Route exact path="/login" component={Login} />
-          <PrivateRoute exact path="/admin" component={Admin} />
+          <Route exact path="/admin" component={Admin} />
         </Router>
-      </AuthContext.Provider>
     </div>
   );
 }

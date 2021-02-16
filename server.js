@@ -3,14 +3,12 @@ const compression = require("compression");
 const express = require("express");
 const mongoose = require("mongoose");
 const session = require("express-session");
-const User = require("./models/Users");
-const Activity = require("./models/Activity-Log");
 
 
 const app = express();
 
 // Setting up port and requiring models for syncing
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3002;
 
 function shouldCompress (req, res) {
     if (req.headers['x-no-compression']) {
