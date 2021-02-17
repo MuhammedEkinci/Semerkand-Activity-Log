@@ -5,11 +5,30 @@ const { request } = require("express");
 
 // post users into database
 router.post("/users", async (req, res, next) => {
-    res.send("post user route hit!!");
+    //res.send("post user route hit!!");
 
     const {userID, password, branch, username, email, phone} = req.body;
 
     try {
+
+        //check 
+        if(!userID || !password || !branch || !username || !email || !phone) {
+            return res.status(400).json({
+                success: false,
+                error: "Please input all credentials"
+            });
+        }
+
+        //check if existing user is in database
+        const checkUser = await User.findOne({ email });
+
+        if(checkUser) {
+            return res.status(400).json({
+                success: false,
+                error: "Person with this email exists"
+            });
+        }
+
         const user = await User.create({
             userID,
             password,
@@ -21,12 +40,12 @@ router.post("/users", async (req, res, next) => {
 
         return res.status(201).json({
             success: true,
-            user,
+            token: "kjsfhhj",
         });
     } catch (error) {
         return res.status(500).json({
             success: false,
-            error: error.message,
+            error: "sign in failed",
         })
     }
     // User.create(req.body).then((error, data) => {
@@ -83,7 +102,7 @@ router.post("/login", async (req, res) => {
             });
         }
 
-        return res.status(404).json({
+        res.status(404).json({
             success: true,
             token: "kfhkshfksdjfhskfh",
         });
@@ -91,7 +110,7 @@ router.post("/login", async (req, res) => {
     } catch (error) {
         return res.status(500).json({
             success: false,
-            error: error.message
+            error: "Login failed"
         });
     }
 })
