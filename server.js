@@ -1,51 +1,39 @@
-//dependencies needed for server side
-const compression = require("compression");
 const express = require("express");
 const mongoose = require("mongoose");
-const session = require("express-session");
-const passport = require("./config/passport");
+const bodyParser = require("body-parser");
+const passport = require("passport");
 
+const users = require("./router/userRouter");
 
-// Setting up port and requiring models for syncing
-const PORT = process.env.PORT || 3002;
-
-function shouldCompress (req, res) {
-    if (req.headers['x-no-compression']) {
-      // don't compress responses with this request header
-      return false
-    }
-   
-    // fallback to standard filter function
-    return compression.filter(req, res)
-}
-
-// Serve up static assets (usually on heroku)
-if (process.env.NODE_ENV === "production") {
-    app.use(express.static("client/build"));
-}
-
-// Creating express app and configuring middleware needed for authentication
 const app = express();
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
-// We need to use sessions to keep track of our user's login status
-app.use(session({ secret: "keyboard cat", resave: true, saveUninitialized: true }));
+
+// Bodyparser middleware
+app.use(
+  bodyParser.urlencoded({
+    extended: false
+  })
+);
+app.use(bodyParser.json());
+
+// DB Config
+const db = require("./config/keys").mongoURI;
+// Connect to MongoDB
+mongoose
+  .connect(
+    db,
+    { useNewUrlParser: true }
+  )
+  .then(() => console.log("MongoDB successfully connected"))
+  .catch(err => console.log(err));
+
+  // Passport middleware
 app.use(passport.initialize());
-app.use(passport.session());
 
-mongoose.connect(process.env.MONGOBD_URI || 'mongodb+srv://MuhammedEkinci:*Tbn58kpm@cluster0.e9fkz.mongodb.net/semerkand_activity_log?retryWrites=true&w=majority' ,
-    {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-        useCreateIndex: true,
-        useFindAndModify: true
-    }
-)
+// Passport config
+require("./config/passport")(passport);
 
-//middleware for API routes
-require("./router/userRouter.js")(app);
+// Routes
+app.use("/api/users", users);
 
-// Start the API server
-app.listen(PORT, function() {
-    console.log("==> 🌎  Listening on port %s. Visit http://localhost:%s/ in your browser.", PORT, PORT);
-});
+const port = process.env.PORT || 5000; // process.env.port is Heroku's port if you choose to deploy the app there
+app.listen(port, () => console.log(`Server up and running on port ${port} !`));

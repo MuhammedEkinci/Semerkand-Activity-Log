@@ -10,12 +10,11 @@ mongoose.connect(process.env.MONGOBD_URI || 'mongodb+srv://MuhammedEkinci:*Tbn58
 
 user = [
     {
-        userID: "us-01-01",
-        password: "123456",
-        branch: "New Jersey",
-        name: "blah",
-        email: "blah@email.com",
-        phone: "1112223333"
+        userID: "us-02-01",
+        password: "password",
+        branch: "NJ",
+        email: "blah123@email.com",
+        phone: "9999998877"
     }
 ]
 
