@@ -3,9 +3,8 @@ const compression = require("compression");
 const express = require("express");
 const mongoose = require("mongoose");
 const session = require("express-session");
+const passport = require("./config/passport");
 
-
-const app = express();
 
 // Setting up port and requiring models for syncing
 const PORT = process.env.PORT || 3002;
@@ -26,8 +25,13 @@ if (process.env.NODE_ENV === "production") {
 }
 
 // Creating express app and configuring middleware needed for authentication
+const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+// We need to use sessions to keep track of our user's login status
+app.use(session({ secret: "keyboard cat", resave: true, saveUninitialized: true }));
+app.use(passport.initialize());
+app.use(passport.session());
 
 mongoose.connect(process.env.MONGOBD_URI || 'mongodb+srv://MuhammedEkinci:*Tbn58kpm@cluster0.e9fkz.mongodb.net/semerkand_activity_log?retryWrites=true&w=majority' ,
     {
@@ -39,8 +43,7 @@ mongoose.connect(process.env.MONGOBD_URI || 'mongodb+srv://MuhammedEkinci:*Tbn58
 )
 
 //middleware for API routes
-app.use("/api", require("./router/userRouter"));
-app.use("/api", require("./router/Activity-Routes"));
+require("./router/userRouter.js")(app);
 
 // Start the API server
 app.listen(PORT, function() {

@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+const jwt = require("jsonwebtoken");
 
 // Requiring bcrypt for password hashing. Using the bcryptjs version as the regular bcrypt module sometimes causes errors on Windows machines
 var bcrypt = require("bcryptjs");
@@ -18,11 +19,6 @@ const UserSchema = new Schema({
         type: String,
         required: true
     },
-    username: {
-        type: String,
-        required: true,
-        min:[1]
-    },
     email: {
         type: String,
         required:true
@@ -36,20 +32,16 @@ const UserSchema = new Schema({
     }
 });
 
-//hash the password
-UserSchema.pre("save", async function(next) {
-    if(!this.password("password")) {
-        next();
-    }
+// Hooks are automatic methods that run during various phases of the User Model lifecycle
+// In this case, before a User is created, we will automatically hash their password
+UserSchema.methods.generateHash =  function(password) {
+    return bcrypt.hashSync(password, bcrypt.genSaltSync(10), null);
+};
 
-    const salt = await bcrypt.genSalt(10);
-    this.password = await bcrypt.hash(this.password, salt)
-});
-
-//compare if user entered password is in the database
-UserSchema.methods.matchPasswords = async function(password) {
-    return await bcrypt.compare(password, this.password);
-}
+// Creating a custom method for our User model. This will check if an unhashed password entered by the user can be compared to the hashed password stored in our database
+UserSchema.prototype.validPassword = function(password) {
+    return bcrypt.compareSync(password, this.password);
+};
 
 const User = mongoose.model("User", UserSchema);
 

@@ -1,62 +1,34 @@
-const router = require("express").Router();
+
 const User = require("../models/Users");
-const bcrypt = require("bcryptjs");
-const { request } = require("express");
+const passport = require("../config/passport");
 
-// post users into database
-router.post("/users", async (req, res, next) => {
-    //res.send("post user route hit!!");
+module.exports = function(app) {
 
-    const {userID, password, branch, username, email, phone} = req.body;
+    app.post("/api/signin", function(req, res) {
+        //res.send("post user route hit!!");
 
-    try {
+        // signup users into database
+        const {userID, password, branch, username, email, phone} = req.body;
 
-        //check 
-        if(!userID || !password || !branch || !username || !email || !phone) {
-            return res.status(400).json({
-                success: false,
-                error: "Please input all credentials"
-            });
-        }
-
-        //check if existing user is in database
-        const checkUser = await User.findOne({ email });
-
-        if(checkUser) {
-            return res.status(400).json({
-                success: false,
-                error: "Person with this email exists"
-            });
-        }
-
-        const user = await User.create({
+        const user = User.create({
             userID,
             password,
             branch,
             username,
             email,
             phone,
-        });
-
-        return res.status(201).json({
-            success: true,
-            token: "kjsfhhj",
-        });
-    } catch (error) {
-        return res.status(500).json({
-            success: false,
-            error: "sign in failed",
         })
-    }
-    // User.create(req.body).then((error, data) => {
-    //     if(error) {
-    //         res.send(error)
-    //     } else {
-    //         console.log(data)
-    //         res.json(data);
-    //     }
-    // });
-});
+
+        user.save()
+    });
+
+    // Using the passport.authenticate middleware with our local strategy.
+    // If the user has valid login credentials, send them to the members page.
+    // Otherwise the user will be sent an error
+    app.post("/api/login", passport.authenticate("local"), function(req, res) {
+        res.json(req.user);
+    });
+};
 
 //get all users for admin to see and manage
 router.get("/users", (req, res) => {
@@ -102,10 +74,7 @@ router.post("/login", async (req, res) => {
             });
         }
 
-        res.status(404).json({
-            success: true,
-            token: "kfhkshfksdjfhskfh",
-        });
+        sendToken(user, 200, res);
 
     } catch (error) {
         return res.status(500).json({
@@ -114,5 +83,3 @@ router.post("/login", async (req, res) => {
         });
     }
 })
-
-module.exports = router;
