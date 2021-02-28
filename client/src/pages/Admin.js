@@ -1,6 +1,10 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import { Form, Button, Card, Container, Alert, Row, Col  } from "react-bootstrap";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { registerUser } from "../actions/authActions"
+import classnames from "classnames";
 
 
 class Admin extends Component {
@@ -16,6 +20,15 @@ class Admin extends Component {
             errors: {}
         };
     }
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.errors) {
+          this.setState({
+            errors: nextProps.errors
+          });
+        }
+    }
+
     onChange = e => {
         this.setState({ [e.target.id]: e.target.value });
     };
@@ -28,8 +41,8 @@ class Admin extends Component {
             phone: this.state.phone,
             password: this.state.password,
             password2: this.state.password2
-            };
-        console.log(newUser);
+        };
+        this.props.registerUser(newUser, this.props.history);
     };
     render() {
         const { errors } = this.state;
@@ -57,7 +70,11 @@ class Admin extends Component {
                                 value={this.state.name}
                                 error={errors.name}
                                 id="name"
+                                className={classnames("", {
+                                    invalid: errors.name
+                                })}
                             />
+                            <span className="red-text">{errors.name}</span>
                         </Col>
                         <Col lg={6} sm={12}>
                             <Form.Group controlId="formGroupEmail">
@@ -67,14 +84,18 @@ class Admin extends Component {
                                     value={this.state.email}
                                     error={errors.email}
                                     id="email"
+                                    className={classnames("", {
+                                        invalid: errors.email
+                                    })}
                                 />
+                                <span className="red-text">{errors.email}</span>
                             </Form.Group>
                         </Col>
                     </Row>
                     <Row>
                         <Col lg={6} sm={12}>
                             <Form.Label>Branch</Form.Label>
-                            <Form.Control as="select" onChange={this.onChange} value={this.state.branch} error={errors.branch} id="branch">
+                            <Form.Control as="select" onChange={this.onChange} value={this.state.branch} error={errors.branch} id="branch" className={classnames("", { invalid: errors.phone })}>
                                 <option>New Jersey</option>
                                 <option>Deleware</option>
                                 <option>Rochester</option>
@@ -86,6 +107,7 @@ class Admin extends Component {
                                 <option>Chicago</option>
                                 <option>Turkey</option>
                             </Form.Control>
+                            <span className="red-text">{errors.branch}</span>
                         </Col>
                         <Col lg={6} sm={12}>
                             <Form.Group controlId="formGroupEmail">
@@ -95,7 +117,11 @@ class Admin extends Component {
                                     value={this.state.phone}
                                     error={errors.phone}
                                     id="phone"
+                                    className={classnames("", {
+                                        invalid: errors.phone
+                                    })}
                                 />
+                                <span className="red-text">{errors.phone}</span>
                             </Form.Group>
                         </Col>
                     </Row>
@@ -108,7 +134,11 @@ class Admin extends Component {
                                     value={this.state.password}
                                     error={errors.password}
                                     id="password"
+                                    className={classnames("", {
+                                        invalid: errors.password
+                                    })}
                                 />
+                                <span className="red-text">{errors.password}</span>
                             </Form.Group>
                         </Col>
                         <Col lg={6} sm={12}>
@@ -119,7 +149,11 @@ class Admin extends Component {
                                     value={this.state.password2}
                                     error={errors.password2}
                                     id="password2"
+                                    className={classnames("", {
+                                        invalid: errors.password2
+                                      })}
                                 />
+                                <span className="red-text">{errors.password2}</span>
                             </Form.Group>
                         </Col>
                     </Row>
@@ -129,4 +163,20 @@ class Admin extends Component {
             );
     }
 }
-export default Admin;
+
+Admin.propTypes = {
+    registerUser: PropTypes.func.isRequired,
+    auth: PropTypes.object.isRequired,
+    errors: PropTypes.object.isRequired
+  };
+
+
+const mapStateToProps = state => ({
+    auth: state.auth,
+    errors: state.errors
+  });
+
+export default connect(
+    mapStateToProps,
+    { registerUser }
+  )(withRouter(Admin));
