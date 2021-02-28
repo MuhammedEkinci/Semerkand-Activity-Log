@@ -6,15 +6,20 @@ import Login from './pages/Login';
 import PrivateRoute from "./components/PrivateRoute";
 import {AuthContext} from "./context/auth";
 
+import { Provider } from "react-redux";
+import store from "./store";
+
 function App() {
   return (
     <div className="App">
+      <Provider store={store}>
         <Router>
-          <Route exact path="/Home" component={Home} />
-          <Route exact path="/" component={Login} />
-          <Route exact path="/login" component={Login} />
-          <Route exact path="/admin" component={Admin} />
-        </Router>
+            <Route exact path="/Home" component={Home} />
+            <Route exact path="/" component={Login} />
+            <Route exact path="/login" component={Login} />
+            <Route exact path="/admin" component={Admin} />
+          </Router>
+      </Provider>
     </div>
   );
 }
