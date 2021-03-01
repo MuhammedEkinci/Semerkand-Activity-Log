@@ -11,7 +11,8 @@ import store from "./store";
 import Home from "./pages/Home";
 import Admin from './pages/Admin';
 import Login from './pages/Login';
-import PrivateRoute from "./components/PrivateRoute";
+import AddActivity from "./pages/AddActivity";
+import PrivateRoute from "./components/PrivateRouter";
 
 // Check for token to keep user logged in
 if (localStorage.jwtToken) {
@@ -43,6 +44,7 @@ function App() {
             <Route exact path="/admin" component={Admin} />
             <Switch>
               <PrivateRoute exact path="/home" component={Home} />
+              <PrivateRoute exact path="/create-activity" component={AddActivity} />
             </Switch>
         </Router>
       </Provider>

@@ -1,6 +1,6 @@
 import React, {Component} from "react";
-import { Form, Button, Card, Container, Alert  } from "react-bootstrap";
-import {Link, useHistory} from "react-router-dom";
+import { Form, Button, Card, Container  } from "react-bootstrap";
+import {Link} from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { loginUser } from "../actions/authActions";

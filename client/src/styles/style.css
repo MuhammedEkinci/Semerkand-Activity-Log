@@ -1,0 +1,32 @@
+/*Page headr css*/
+.page-header{
+    background-color: rgb(28, 27, 95);
+    margin-left: 0;
+    margin-right: 0;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    font-family: 'Noto Sans', sans-serif;
+}
+
+#page-title{
+    background-color: rgb(12, 135, 218);
+    color: white;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 5px;
+    padding-right: 5px;
+    margin-top: -20px;
+    margin-bottom: -20px;
+}
+
+h1 {
+    font-size: 4rem !important;
+}
+
+
+@media (max-width: 767px) {
+    h1 {
+        font-size: 2rem !important;
+    }
+}
+/*Page headr css*/

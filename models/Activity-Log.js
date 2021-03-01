@@ -10,7 +10,7 @@ const activitySchema = new Schema({
         type: String,
         required: true
     },
-    activityCode: {
+    activityType: {
         type: String,
         required: true
     },

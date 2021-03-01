@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Link, withRouter } from "react-router-dom";
-import { Form, Button, Card, Container, Alert, Row, Col  } from "react-bootstrap";
+import { Form, Button, Row, Col  } from "react-bootstrap";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { registerUser } from "../actions/authActions"

@@ -1,6 +1,14 @@
 import axios from "axios";
 
-//save user into database for register
-export const registerUser = function (newUser) {
-    return axios.post("/api/users/register", newUser);
+export default {
+    saveActivity: function(newActivity) {
+        return axios({
+            method: "post",
+            url:"/api/users/activities",
+            data: newActivity
+        })
+    },
+    getActivities: function() {
+        return axios.get("/api/users/activities");
+    }
 }
