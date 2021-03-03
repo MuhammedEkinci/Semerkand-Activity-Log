@@ -8,7 +8,5 @@ export default {
             data: newActivity
         })
     },
-    getActivities: function() {
-        return axios.get("/api/users/activities");
-    }
+    getActivities: () => axios.get("/api/users/activities")
 }

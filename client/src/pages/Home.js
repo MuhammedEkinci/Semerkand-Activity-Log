@@ -4,8 +4,10 @@ import { connect } from "react-redux";
 import { logoutUser } from "../actions/authActions";
 import { Form, Button, Card, Container, Alert, Modal  } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import "../styles/style.css";
 
 import PageHeader from "../components/PageHeader";
+import ActivityTable from "../components/ActivityTable";
 
 class Home extends Component {
 
@@ -23,7 +25,14 @@ class Home extends Component {
             <div className="create-activity-section">
                 <Container>
                     <PageHeader />
-                    <Link to="/create-activity" className="btn btn-primary waves-effect">Add Activity</Link>
+
+                    <section className="section-area" id="add-activity-area">
+                        <Link to="/create-activity" className="btn btn-primary waves-effect">Add Activity</Link>
+                    </section>
+
+                    <section className="section-area" id="add-activity-area">
+                        <ActivityTable />                    
+                    </section>
                 </Container>
             </div>
         );
