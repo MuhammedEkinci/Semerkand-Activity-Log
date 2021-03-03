@@ -14,7 +14,7 @@ class ActivityTable extends Component {
     retrieveActivities = async () => {
         try {
             const res = await API.getActivities();
-            const activities = res.data.results.map(act => ({
+            const activities = res.data.map(act => ({
                 branch: act.branch,
                 country: act.country,
                 activityType: act.activityType,
@@ -27,7 +27,7 @@ class ActivityTable extends Component {
                 numParticipants: act.numParticipants,
                 hatmeType: act.hatmeType
             }));
-
+            console.log(activities);
             this.setState({activitieList: activities, activitieListFiltered: activities});
 
         } catch(err) {
@@ -45,7 +45,7 @@ class ActivityTable extends Component {
             <>
                 <h1>This is where Activities will render</h1>
                 <div>
-                    <table className="table table-sm">
+                    <Table className="table table-lg" striped bordered responsive="sm">
                         <tr>
                             <thead>
                                 <th>Branch</th>
@@ -80,7 +80,7 @@ class ActivityTable extends Component {
                                 })}
                             </tbody>
                         </tr>
-                    </table>
+                    </Table>
                 </div>
             </>
         );
