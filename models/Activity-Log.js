@@ -45,6 +45,10 @@ const activitySchema = new Schema({
     hatmeType: {
         type: String,
         required: false
+    },
+    currentUser: {
+        type: String,
+        required: false
     }
 
 });

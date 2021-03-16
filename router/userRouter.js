@@ -78,7 +78,7 @@ router.post("/login", (req, res) => {
                     payload,
                     keys.secretOrKey,
                     {
-                    expiresIn: 31556926 // 1 year in seconds
+                    expiresIn: 28800 // 8 hours in seconds
                     },
                     (err, token) => {
                         res.json({
@@ -94,6 +94,21 @@ router.post("/login", (req, res) => {
             }
         });
     });
+});
+
+router.get("/current_user", function(req, res){
+  if(!req.user){
+    // The user is not logged in, send back an empty object
+    res.json({});
+  } else {
+    // Otherwise send back the user's email and id
+    // Sending back a password, even a hashed password, isn't a good idea
+    res.json({
+      email: req.user.email,
+      branch: req.user.branch,
+      id: req.user.id
+    });
+  }
 });
 
 module.exports = router;

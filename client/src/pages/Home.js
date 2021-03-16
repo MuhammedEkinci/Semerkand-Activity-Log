@@ -11,7 +11,6 @@ import ActivityTable from "../components/ActivityTable";
 
 class Home extends Component {
 
-
     onLogoutClick = e => {
         e.preventDefault();
         this.props.logoutUser();
@@ -25,11 +24,12 @@ class Home extends Component {
             <div className="create-activity-section">
                 <Container>
                     <PageHeader />
-
+                    <b>Hey there,</b> {user.name.split(" ")[0]}
                     <section className="section-area" id="add-activity-area">
                         <Link to="/create-activity" className="btn btn-primary waves-effect">Add Activity</Link>
+                        <Button className="btn btn-primary waves-effect waves-light hoverable blue accent-3" onClick={this.onLogoutClick}>Logout</Button>
                     </section>
-
+                    
                     <section className="section-area" id="add-activity-area">
                         <ActivityTable />                    
                     </section>

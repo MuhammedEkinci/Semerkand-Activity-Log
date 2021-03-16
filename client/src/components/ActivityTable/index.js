@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import API from "../../utils/API";
-import { Container, Table  } from "react-bootstrap";
+import {Table, Form, Col } from "react-bootstrap";
 
 class ActivityTable extends Component {
 
@@ -43,6 +43,15 @@ class ActivityTable extends Component {
     render(){
         return (
             <>
+                <div id="table-filter-section">
+                    <Form>
+                        <Form.Row>
+                            <Col xs={12} md={4}>
+                                <Form.Control placeholder="First name" />   
+                            </Col>
+                        </Form.Row>
+                    </Form>
+                </div>
                 <h1>This is where Activities will render</h1>
                 <div>
                     <Table className="table table-lg" striped bordered responsive="sm">

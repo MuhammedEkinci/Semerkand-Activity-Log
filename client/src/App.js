@@ -39,7 +39,7 @@ function App() {
     <div className="App">
       <Provider store={store}>
         <Router>
-            <Route exact path="/" component={Login} />
+            <Route exact path="/" component={Home} />
             <Route exact path="/login" component={Login} />
             <Route exact path="/admin" component={Admin} />
             <Switch>
