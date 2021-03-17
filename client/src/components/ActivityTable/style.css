@@ -1,0 +1,13 @@
+#activity-search {
+    margin-bottom: 10px;
+}
+
+#filter-checkbox{
+    margin-left: 10px;
+    margin-right: 3px;
+}
+
+.page-section{
+    display: flex;
+    display: inline;
+}
